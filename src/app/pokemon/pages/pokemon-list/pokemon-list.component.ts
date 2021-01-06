@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { GridOptions, AllCommunityModules } from '@ag-grid-community/all-modules';
+import { GridOptions } from '@ag-grid-community/all-modules';
+import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { Pokemon, PokemonDTO } from 'src/app/core/interfaces/pokemon';
 import { Router } from '@angular/router';
+
+const DEFAULT_ROW_NUM = 20;
 
 @Component({
   selector: 'app-pokemon-list',
@@ -12,7 +15,7 @@ import { Router } from '@angular/router';
 export class PokemonListComponent implements OnInit {
 
   gridOptions: GridOptions;
-  modules = AllCommunityModules;
+  modules = [ServerSideRowModelModule];
 
   constructor(
     private router: Router,
@@ -22,16 +25,11 @@ export class PokemonListComponent implements OnInit {
     this.gridOptions = {
       columnDefs: this.createColumnDefs(),
       pagination: true,
+      paginationPageSize: DEFAULT_ROW_NUM,
+      cacheBlockSize: DEFAULT_ROW_NUM,
       rowSelection: 'single',
+      rowModelType: 'serverSide',
 
-      // Get pokemon list and update grid
-      onGridReady: () => {
-        this.pokemonService.getPokemonList().subscribe(
-          (result: PokemonDTO) => {
-            this.gridOptions.api?.setRowData(result.results);
-          }
-        );
-      },
       // Auto size of columns on first data render
       onFirstDataRendered: (params) => {
         params.api.sizeColumnsToFit();
@@ -41,6 +39,22 @@ export class PokemonListComponent implements OnInit {
         const selectedRows = this.gridOptions.api?.getSelectedRows() as Pokemon[];
         if (selectedRows.length) {
           this.router.navigate([`poke/detail/${selectedRows[0].name}`]);
+        }
+      },
+      serverSideDatasource: {
+        getRows: (params) => {
+          try {
+            this.pokemonService
+              .getPokemonList(DEFAULT_ROW_NUM, params.request.startRow)
+              .subscribe(
+                result => {
+                  params.successCallback(result.results, result.count);
+                }
+              );
+          } catch (err) {
+            console.log(err);
+            params.failCallback();
+          }
         }
       }
     } as GridOptions;

@@ -15,8 +15,8 @@ export interface MoveStatAffectSets {
 }
 
 export interface NatureStatAffectSets {
-  increase: any[];    // TODO: need to implement correct interface/type
-  decrease: any[];    // TODO: need to implement correct interface/type
+  increase: any[];
+  decrease: any[];
 }
 
 export interface Stat {
@@ -26,7 +26,7 @@ export interface Stat {
   is_battle_only: boolean;
   affecting_moves: MoveStatAffectSets;
   affecting_natures: NatureStatAffectSets;
-  characteristics: any;     // TODO: need to implement correct interface/type
-  move_damage_class: any;   // TODO: need to implement correct interface/type
+  characteristics: any;
+  move_damage_class: any;
   names: Name;
 }

@@ -13,6 +13,7 @@
   "dependencies": {
     "@ag-grid-community/all-modules": "^24.1.0",
     "@ag-grid-community/angular": "^24.1.0",
+    "@ag-grid-enterprise/server-side-row-model": "^24.1.0",
     "@angular/animations": "~11.0.5",
     "@angular/common": "~11.0.5",
     "@angular/compiler": "~11.0.5",
