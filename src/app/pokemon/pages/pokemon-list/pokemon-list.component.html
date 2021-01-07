@@ -1,8 +1,8 @@
 <div class="poke-list">
   <div class="header">
     <p class="title">Pokemon List</p>
-    <button class="btn btn-primary mr-2">Pokemon I've caught</button>
-    <button class="btn btn-primary">Pokemon Wishlist</button>
+    <button class="btn btn-primary mr-2" (click)="openModal(personalList, 'caught')">Pokemon I've caught</button>
+    <button class="btn btn-primary" (click)="openModal(personalList, 'wish')">Pokemon Wishlist</button>
   </div>
 
   <div class="content">
@@ -14,3 +14,25 @@
     </ag-grid-angular>
   </div>
 </div>
+
+<!-- Modal for personal list -->
+<ng-template #personalList let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ personalModalTitle }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ag-grid-angular
+      style="height: 300px"
+      class="ag-theme-alpine"
+      [gridOptions]="personalGridOptions"
+      [modules]="personalModules"
+    >
+    </ag-grid-angular>
+  </div>
+  <div class="modal-footer">
+    <button type="button" ngbAutofocus class="btn btn-success" (click)="c('Okay')">Okay</button>
+  </div>
+</ng-template>

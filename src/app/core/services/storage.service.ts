@@ -35,4 +35,12 @@ export class StorageService {
       this.saveDataToStorage();
     }
   }
+
+  getCaughtList(): any[] {
+    return this.caughtList.map(str => ({ name: str }));
+  }
+
+  getWishList(): any[] {
+    return this.wishlist.map(str => ({ name: str }));
+  }
 }

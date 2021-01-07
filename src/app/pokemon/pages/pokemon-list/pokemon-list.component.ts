@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { GridOptions } from '@ag-grid-community/all-modules';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GridOptions, AllCommunityModules } from '@ag-grid-community/all-modules';
 import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { PokemonInfo } from 'src/app/core/interfaces/pokemon';
 import { Router } from '@angular/router';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 const DEFAULT_ROW_NUM = 20;
 
@@ -14,14 +16,20 @@ const DEFAULT_ROW_NUM = 20;
 })
 export class PokemonListComponent implements OnInit {
 
-  gridOptions: GridOptions;
-  modules = [ServerSideRowModelModule];
+  public gridOptions: GridOptions;
+  public modules = [ServerSideRowModelModule];
+
+  public personalGridOptions: GridOptions;
+  public personalModules = AllCommunityModules;
+  public personalModalTitle = '';
 
   constructor(
     private router: Router,
-    private pokemonService: PokemonService
+    private modalService: NgbModal,
+    private pokemonService: PokemonService,
+    private storageService: StorageService
   ) {
-    // Init ag-grid options
+    // Init ag-grid options for entire pokemon list
     this.gridOptions = {
       columnDefs: this.createColumnDefs(),
       pagination: true,
@@ -67,5 +75,27 @@ export class PokemonListComponent implements OnInit {
       { field: 'name' },
       { field: 'url' },
     ];
+  }
+
+  openModal(content: any, type: string): void {
+    // Init ag-grid options for personal list
+    this.personalGridOptions = {
+      columnDefs: [
+        { field: 'name' },
+      ],
+      rowSelection: 'single',
+      rowData: type === 'caught' ? this.storageService.getCaughtList() : this.storageService.getWishList(),
+
+      // Auto size of columns on first data render
+      onFirstDataRendered: (params) => {
+        params.api.sizeColumnsToFit();
+      },
+      // Navigate to detail page on row selection
+      onSelectionChanged: () => {
+      }
+    } as GridOptions;
+
+    this.personalModalTitle = type === 'caught' ? 'Pokemon list I\'ve caught' : 'Pokemon list I want to catch';
+    this.modalService.open(content);
   }
 }
