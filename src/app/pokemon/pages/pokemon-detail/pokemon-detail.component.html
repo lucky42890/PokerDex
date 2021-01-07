@@ -1,8 +1,8 @@
 <div class="poke-detail">
   <div class="header">
     <p class="title">Details of Pokemon "{{ pokemonName }}"</p>
-    <button class="btn btn-success mr-2">Add to Caught list</button>
-    <button class="btn btn-success">Add to Wishlist</button>
+    <button class="btn btn-success mr-2" (click)="openModal(caughtListConfirm, 'caughtlist')">Add to Caught list</button>
+    <button class="btn btn-success" (click)="openModal(wishListConfirm, 'wishlist')">Add to Wishlist</button>
   </div>
 
   <div *ngIf="pokemonInfo" class="content">
@@ -47,3 +47,37 @@
     </div>
   </div>
 </div>
+
+<!-- Modal for caught list -->
+<ng-template #caughtListConfirm let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add pokemon to Caught list!</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>We will add this pokemon to your caught list! Please confirm!</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="c('Cancel')">Cancel</button>
+    <button type="button" ngbAutofocus class="btn btn-danger" (click)="c('Okay')">Okay</button>
+  </div>
+</ng-template>
+
+<!-- Modal for wish list -->
+<ng-template #wishListConfirm let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add pokemon to Wish list!</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>We will add this pokemon to your wish list! Please confirm!</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="c('Cancel')">Cancel</button>
+    <button type="button" ngbAutofocus class="btn btn-danger" (click)="c('Okay')">Okay</button>
+  </div>
+</ng-template>

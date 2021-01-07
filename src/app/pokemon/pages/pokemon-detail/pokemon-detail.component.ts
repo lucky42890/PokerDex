@@ -1,8 +1,10 @@
 import { GridOptions, AllCommunityModules } from '@ag-grid-community/all-modules';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pokemon } from 'src/app/core/interfaces/pokemon';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -20,7 +22,9 @@ export class PokemonDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private pokemonService: PokemonService
+    private modalService: NgbModal,
+    private pokemonService: PokemonService,
+    private storageService: StorageService
   ) {}
 
   ngOnInit(): void {
@@ -76,7 +80,24 @@ export class PokemonDetailComponent implements OnInit {
         );
 
     } catch (err) {
-      console.log('Pokemon Info API error', err);
+      console.log('API get error of pokemon detail information', err);
     }
+  }
+
+  openModal(content: any, modalName: string): void {
+    const modalRef = this.modalService.open(content);
+    modalRef.closed.subscribe(
+      message => {
+        if (message === 'Okay') {
+          if (modalName === 'caughtlist') {
+            this.storageService.addPokemonToCaughtList(this.pokemonName);
+          } else if (modalName === 'wishlist') {
+            this.storageService.addPokemonToWishList(this.pokemonName);
+          } else {
+            alert('other');
+          }
+        }
+      }
+    );
   }
 }
