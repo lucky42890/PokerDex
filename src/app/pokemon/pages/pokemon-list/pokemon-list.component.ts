@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GridOptions } from '@ag-grid-community/all-modules';
 import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
-import { Pokemon, PokemonDTO } from 'src/app/core/interfaces/pokemon';
+import { PokemonInfo } from 'src/app/core/interfaces/pokemon';
 import { Router } from '@angular/router';
 
 const DEFAULT_ROW_NUM = 20;
@@ -36,7 +36,7 @@ export class PokemonListComponent implements OnInit {
       },
       // Navigate to detail page on row selection
       onSelectionChanged: () => {
-        const selectedRows = this.gridOptions.api?.getSelectedRows() as Pokemon[];
+        const selectedRows = this.gridOptions.api?.getSelectedRows() as PokemonInfo[];
         if (selectedRows.length) {
           this.router.navigate([`poke/detail/${selectedRows[0].name}`]);
         }

@@ -5,7 +5,45 @@
     <button class="btn btn-success">Add to Wishlist</button>
   </div>
 
-  <div class="content">
-    detail content
+  <div *ngIf="pokemonInfo" class="content">
+    <div class="mb-3">
+      <p class="label mb-2">Name:</p>
+      <p class="description">{{ pokemonInfo.name }}</p>
+    </div>
+
+    <div class="mb-3">
+      <p class="label mb-2">Base experience:</p>
+      <p class="description">{{ pokemonInfo.base_experience }}</p>
+    </div>
+
+    <div class="mb-3">
+      <p class="label mb-2">Height:</p>
+      <p class="description">{{ pokemonInfo.height }}</p>
+    </div>
+
+    <div class="mb-3">
+      <p class="label mb-2">Weight:</p>
+      <p class="description">{{ pokemonInfo.weight }}</p>
+    </div>
+
+    <div class="mb-3">
+      <p class="label mb-3">Moves:</p>
+      <ag-grid-angular
+        class="ag-theme-alpine list-table"
+        [gridOptions]="moveGridOptions"
+        [modules]="modules"
+      >
+      </ag-grid-angular>
+    </div>
+
+    <div class="mb-3">
+      <p class="label mb-3">Stats:</p>
+      <ag-grid-angular
+        class="ag-theme-alpine list-table"
+        [gridOptions]="statGridOptions"
+        [modules]="modules"
+      >
+      </ag-grid-angular>
+    </div>
   </div>
 </div>
