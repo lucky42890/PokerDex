@@ -92,6 +92,11 @@ export class PokemonListComponent implements OnInit {
       },
       // Navigate to detail page on row selection
       onSelectionChanged: () => {
+        const selectedRows = this.personalGridOptions.api?.getSelectedRows() as PokemonInfo[];
+        if (selectedRows.length) {
+          this.modalService.dismissAll();
+          this.router.navigate([`poke/detail/${selectedRows[0].name}`]);
+        }
       }
     } as GridOptions;
 
