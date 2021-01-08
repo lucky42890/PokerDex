@@ -20,6 +20,9 @@ export class PokemonDetailComponent implements OnInit {
   public statGridOptions: GridOptions;
   public modules = AllCommunityModules;
 
+  public modalTitle = '';
+  public modalContent = '';
+
   constructor(
     private route: ActivatedRoute,
     private modalService: NgbModal,
@@ -84,17 +87,41 @@ export class PokemonDetailComponent implements OnInit {
     }
   }
 
-  openModal(content: any, modalName: string): void {
+  openModal(content: any, modalType: string): void {
+    let alreadyExist = false;
+
+    if (modalType === 'caughtlist') {
+      // For caught list modal
+      this.modalTitle = 'Add pokemon to Caught list!';
+      this.modalContent = 'We will add this pokemon to your caught list! Please confirm!';
+
+      if (this.storageService.isAlreadyInCaughtList(this.pokemonName)) {
+        alreadyExist = true;
+        this.modalContent = 'This pokemon is already in caught list!';
+      }
+    } else {
+      // For wish list modal
+      this.modalTitle = 'Add pokemon to Wish list!';
+      this.modalContent = 'We will add this pokemon to your wish list! Please confirm!';
+
+      if (this.storageService.isAlreadyInWishList(this.pokemonName)) {
+        alreadyExist = true;
+        this.modalContent = 'This pokemon is already in wish list!';
+      }
+    }
+
     const modalRef = this.modalService.open(content);
     modalRef.closed.subscribe(
       message => {
         if (message === 'Okay') {
-          if (modalName === 'caughtlist') {
-            this.storageService.addPokemonToCaughtList(this.pokemonName);
-          } else if (modalName === 'wishlist') {
-            this.storageService.addPokemonToWishList(this.pokemonName);
-          } else {
-            alert('other');
+          if (modalType === 'caughtlist') {
+            if (!alreadyExist) {
+              this.storageService.addPokemonToCaughtList(this.pokemonName);
+            }
+          } else if (modalType === 'wishlist') {
+            if (!alreadyExist) {
+              this.storageService.addPokemonToWishList(this.pokemonName);
+            }
           }
         }
       }

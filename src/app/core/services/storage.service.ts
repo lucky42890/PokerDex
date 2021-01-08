@@ -23,17 +23,21 @@ export class StorageService {
   }
 
   addPokemonToCaughtList(pokemonName: string): void {
-    if (this.caughtList.indexOf(pokemonName) < 0) {
-      this.caughtList.push(pokemonName);
-      this.saveDataToStorage();
-    }
+    this.caughtList.push(pokemonName);
+    this.saveDataToStorage();
   }
 
   addPokemonToWishList(pokemonName: string): void {
-    if (this.wishlist.indexOf(pokemonName) < 0) {
-      this.wishlist.push(pokemonName);
-      this.saveDataToStorage();
-    }
+    this.wishlist.push(pokemonName);
+    this.saveDataToStorage();
+  }
+
+  isAlreadyInCaughtList(name: string): boolean {
+    return this.caughtList.filter(item => item === name).length > 0;
+  }
+
+  isAlreadyInWishList(name: string): boolean {
+    return this.wishlist.filter(item => item === name).length > 0;
   }
 
   getCaughtList(): any[] {
