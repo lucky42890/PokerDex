@@ -1,4 +1,4 @@
-export interface PokemonInfo {
+export interface BasicInfo {
   name: string;
   url: string;
 }
@@ -7,7 +7,7 @@ export interface PokemonDTO {
   count: number;
   next: string;
   previous: string;
-  results: PokemonInfo[];
+  results: BasicInfo[];
 }
 
 export interface Pokemon {

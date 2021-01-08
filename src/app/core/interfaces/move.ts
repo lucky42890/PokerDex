@@ -2,6 +2,7 @@
  * TODO: need to define interface/type for `any`
  */
 
+import { BasicInfo } from './pokemon';
 import { Stat, Name } from './stat';
 
 export interface ContestComboSets {
@@ -72,6 +73,6 @@ export interface Move {
   past_values: PastMoveStatValues[];
   stat_changes: MoveStatChange[];
   super_contest_effect: any;
-  target: any;
-  type: any;
+  target: BasicInfo;
+  type: BasicInfo;
 }

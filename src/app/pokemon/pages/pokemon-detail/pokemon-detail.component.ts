@@ -1,11 +1,13 @@
 import { GridOptions, AllCommunityModules } from '@ag-grid-community/all-modules';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Pokemon } from 'src/app/core/interfaces/pokemon';
+import { BasicInfo, Pokemon } from 'src/app/core/interfaces/pokemon';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Move } from 'src/app/core/interfaces/move';
+import { Stat } from 'src/app/core/interfaces/stat';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -23,6 +25,12 @@ export class PokemonDetailComponent implements OnInit {
 
   public modalTitle = '';
   public modalContent = '';
+
+  @ViewChild('moveModal') moveModal: TemplateRef<any>;
+  public moveDetail: Move;
+
+  @ViewChild('statModal') statModal: TemplateRef<any>;
+  public statDetail: Stat;
 
   constructor(
     private router: Router,
@@ -58,8 +66,18 @@ export class PokemonDetailComponent implements OnInit {
               onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();
               },
-              // Navigate to detail page on row selection
-              onSelectionChanged: () => {
+              // Show move details for clicked row
+              onRowClicked: (event) => {
+                this.spinnerService.show();
+                this.pokemonService
+                  .getPokemonMove(event.data.url)
+                  .subscribe(
+                    move => {
+                      this.spinnerService.hide();
+                      this.moveDetail = move;
+                      this.modalService.open(this.moveModal);
+                    }
+                  );
               }
             } as GridOptions;
 
@@ -80,8 +98,18 @@ export class PokemonDetailComponent implements OnInit {
               onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();
               },
-              // Navigate to detail page on row selection
-              onSelectionChanged: () => {
+              // Show move details for clicked row
+              onRowClicked: (event) => {
+                this.spinnerService.show();
+                this.pokemonService
+                  .getPokemonStat(event.data.name)
+                  .subscribe(
+                    stat => {
+                      this.spinnerService.hide();
+                      this.statDetail = stat;
+                      this.modalService.open(this.statModal);
+                    }
+                  );
               }
             } as GridOptions;
           }

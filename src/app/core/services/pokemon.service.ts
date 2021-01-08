@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { PokemonDTO, Pokemon } from '../interfaces/pokemon';
+import { Move } from '../interfaces/move';
+import { Stat } from '../interfaces/stat';
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +23,14 @@ export class PokemonService {
   getPokemonInfoByName(name: string): Observable<Pokemon> {
     const url = this.API_URL + `pokemon/${name}`;
     return this.http.get<Pokemon>(url);
+  }
+
+  getPokemonMove(url: string): Observable<Move> {
+    return this.http.get<Move>(url);
+  }
+
+  getPokemonStat(name: string): Observable<Stat> {
+    const url = this.API_URL + `stat/${name}`;
+    return this.http.get<Stat>(url);
   }
 }

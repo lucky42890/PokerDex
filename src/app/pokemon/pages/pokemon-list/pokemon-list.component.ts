@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridOptions, AllCommunityModules } from '@ag-grid-community/all-modules';
 import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
-import { PokemonInfo } from 'src/app/core/interfaces/pokemon';
+import { BasicInfo } from 'src/app/core/interfaces/pokemon';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/core/services/storage.service';
 
@@ -44,7 +44,7 @@ export class PokemonListComponent implements OnInit {
       },
       // Navigate to detail page on row selection
       onSelectionChanged: () => {
-        const selectedRows = this.gridOptions.api?.getSelectedRows() as PokemonInfo[];
+        const selectedRows = this.gridOptions.api?.getSelectedRows() as BasicInfo[];
         if (selectedRows.length) {
           this.router.navigate([`poke/detail/${selectedRows[0].name}`]);
         }
@@ -92,7 +92,7 @@ export class PokemonListComponent implements OnInit {
       },
       // Navigate to detail page on row selection
       onSelectionChanged: () => {
-        const selectedRows = this.personalGridOptions.api?.getSelectedRows() as PokemonInfo[];
+        const selectedRows = this.personalGridOptions.api?.getSelectedRows() as BasicInfo[];
         if (selectedRows.length) {
           this.modalService.dismissAll();
           this.router.navigate([`poke/detail/${selectedRows[0].name}`]);
