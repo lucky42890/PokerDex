@@ -1,6 +1,6 @@
 import { GridOptions, AllCommunityModules } from '@ag-grid-community/all-modules';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pokemon } from 'src/app/core/interfaces/pokemon';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
@@ -24,6 +24,7 @@ export class PokemonDetailComponent implements OnInit {
   public modalContent = '';
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private modalService: NgbModal,
     private pokemonService: PokemonService,
@@ -85,6 +86,10 @@ export class PokemonDetailComponent implements OnInit {
     } catch (err) {
       console.log('API get error of pokemon detail information', err);
     }
+  }
+
+  backToList(): void {
+    this.router.navigate([`poke/list`]);
   }
 
   openModal(content: any, modalType: string): void {

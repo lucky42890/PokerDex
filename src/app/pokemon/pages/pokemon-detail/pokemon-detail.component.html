@@ -2,7 +2,8 @@
   <div class="header">
     <p class="title">Details of Pokemon "{{ pokemonName }}"</p>
     <button class="btn btn-success mr-2" (click)="openModal(confirmModal, 'caughtlist')">Add to Caught list</button>
-    <button class="btn btn-success" (click)="openModal(confirmModal, 'wishlist')">Add to Wishlist</button>
+    <button class="btn btn-success mr-2" (click)="openModal(confirmModal, 'wishlist')">Add to Wishlist</button>
+    <button class="btn btn-primary" (click)="backToList()">Back to pokemon list</button>
   </div>
 
   <div *ngIf="pokemonInfo" class="content">
