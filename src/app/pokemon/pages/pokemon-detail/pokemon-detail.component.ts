@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pokemon } from 'src/app/core/interfaces/pokemon';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -28,17 +29,20 @@ export class PokemonDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private modalService: NgbModal,
     private pokemonService: PokemonService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private spinnerService: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
     this.pokemonName = this.route.snapshot.paramMap.get('name') || '';
 
+    this.spinnerService.show();
     try {
       this.pokemonService
         .getPokemonInfoByName(this.pokemonName)
         .subscribe(
           result => {
+            this.spinnerService.hide();
             this.pokemonInfo = result;
 
             // Init ag-grid options
@@ -84,6 +88,7 @@ export class PokemonDetailComponent implements OnInit {
         );
 
     } catch (err) {
+      this.spinnerService.hide();
       console.log('API get error of pokemon detail information', err);
     }
   }
