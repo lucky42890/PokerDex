@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridOptions, AllCommunityModules } from '@ag-grid-community/all-modules';
 import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
@@ -27,7 +27,8 @@ export class PokemonListComponent implements OnInit {
     private router: Router,
     private modalService: NgbModal,
     private pokemonService: PokemonService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private ngZone: NgZone
   ) {
     // Init ag-grid options for entire pokemon list
     this.gridOptions = {
@@ -46,7 +47,9 @@ export class PokemonListComponent implements OnInit {
       onSelectionChanged: () => {
         const selectedRows = this.gridOptions.api?.getSelectedRows() as BasicInfo[];
         if (selectedRows.length) {
-          this.router.navigate([`poke/detail/${selectedRows[0].name}`]);
+          this.ngZone.run(() => {
+            this.router.navigate([`poke/detail/${selectedRows[0].name}`]);
+          });
         }
       },
       serverSideDatasource: {
@@ -95,7 +98,9 @@ export class PokemonListComponent implements OnInit {
         const selectedRows = this.personalGridOptions.api?.getSelectedRows() as BasicInfo[];
         if (selectedRows.length) {
           this.modalService.dismissAll();
-          this.router.navigate([`poke/detail/${selectedRows[0].name}`]);
+          this.ngZone.run(() => {
+            this.router.navigate([`poke/detail/${selectedRows[0].name}`]);
+          });
         }
       }
     } as GridOptions;

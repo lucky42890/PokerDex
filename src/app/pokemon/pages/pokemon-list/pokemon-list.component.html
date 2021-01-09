@@ -1,8 +1,13 @@
 <div class="poke-list">
   <div class="header">
     <p class="title">Pokemon List</p>
-    <button class="btn btn-primary mr-2" (click)="openModal(personalList, 'caught')">Pokemon I've caught</button>
-    <button class="btn btn-primary" (click)="openModal(personalList, 'wish')">Pokemon Wishlist</button>
+    <div ngbDropdown placement="bottom-right">
+      <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Actions</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button ngbDropdownItem class="my-2" (click)="openModal(personalList, 'caught')">Caught List</button>
+        <button ngbDropdownItem class="my-2" (click)="openModal(personalList, 'wish')">Wishlist</button>
+      </div>
+    </div>
   </div>
 
   <div class="content">

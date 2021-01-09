@@ -1,8 +1,8 @@
 import { GridOptions, AllCommunityModules } from '@ag-grid-community/all-modules';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BasicInfo, Pokemon } from 'src/app/core/interfaces/pokemon';
+import { Pokemon } from 'src/app/core/interfaces/pokemon';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -38,7 +38,8 @@ export class PokemonDetailComponent implements OnInit {
     private modalService: NgbModal,
     private pokemonService: PokemonService,
     private storageService: StorageService,
-    private spinnerService: NgxSpinnerService
+    private spinnerService: NgxSpinnerService,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
@@ -68,8 +69,9 @@ export class PokemonDetailComponent implements OnInit {
               },
               // Show move details for clicked row
               onRowClicked: (event) => {
-                this.spinnerService.show();
-                this.pokemonService
+                this.ngZone.run(() => {
+                  this.spinnerService.show();
+                  this.pokemonService
                   .getPokemonMove(event.data.url)
                   .subscribe(
                     move => {
@@ -78,6 +80,7 @@ export class PokemonDetailComponent implements OnInit {
                       this.modalService.open(this.moveModal);
                     }
                   );
+                });
               }
             } as GridOptions;
 
@@ -100,16 +103,18 @@ export class PokemonDetailComponent implements OnInit {
               },
               // Show move details for clicked row
               onRowClicked: (event) => {
-                this.spinnerService.show();
-                this.pokemonService
-                  .getPokemonStat(event.data.name)
-                  .subscribe(
-                    stat => {
-                      this.spinnerService.hide();
-                      this.statDetail = stat;
-                      this.modalService.open(this.statModal);
-                    }
-                  );
+                this.ngZone.run(() => {
+                  this.spinnerService.show();
+                  this.pokemonService
+                    .getPokemonStat(event.data.name)
+                    .subscribe(
+                      stat => {
+                        this.spinnerService.hide();
+                        this.statDetail = stat;
+                        this.modalService.open(this.statModal);
+                      }
+                    );
+                });
               }
             } as GridOptions;
           }

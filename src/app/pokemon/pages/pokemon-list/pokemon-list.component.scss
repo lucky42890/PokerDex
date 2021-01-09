@@ -28,3 +28,14 @@ $page_padding_y: 40px;
     }
   }
 }
+
+@media screen and (max-width: 640px) {
+  .poke-list {
+    padding: 30px 20px;
+    .header {
+      .title {
+        font-size: 26px;
+      }
+    }
+  }
+}
