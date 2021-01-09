@@ -1,3 +1,7 @@
+/**
+ * TODO: need to define interface/type for `any`, for now, defined needed interfaces
+ */
+
 import { Move } from './move';
 
 export interface Name {

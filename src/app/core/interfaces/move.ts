@@ -1,5 +1,5 @@
 /**
- * TODO: need to define interface/type for `any`
+ * TODO: need to define interface/type for `any`, for now, defined needed interfaces
  */
 
 import { BasicInfo } from './pokemon';
