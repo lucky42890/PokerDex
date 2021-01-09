@@ -101,7 +101,7 @@ export class PokemonDetailComponent implements OnInit {
               onFirstDataRendered: (params) => {
                 params.api.sizeColumnsToFit();
               },
-              // Show move details for clicked row
+              // Show stat details for clicked row
               onRowClicked: (event) => {
                 this.ngZone.run(() => {
                   this.spinnerService.show();

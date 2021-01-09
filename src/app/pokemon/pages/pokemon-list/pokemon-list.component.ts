@@ -3,7 +3,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridOptions, AllCommunityModules } from '@ag-grid-community/all-modules';
 import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
 import { PokemonService } from 'src/app/core/services/pokemon.service';
-import { BasicInfo } from 'src/app/core/interfaces/pokemon';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/core/services/storage.service';
 
@@ -43,14 +42,11 @@ export class PokemonListComponent implements OnInit {
       onFirstDataRendered: (params) => {
         params.api.sizeColumnsToFit();
       },
-      // Navigate to detail page on row selection
-      onSelectionChanged: () => {
-        const selectedRows = this.gridOptions.api?.getSelectedRows() as BasicInfo[];
-        if (selectedRows.length) {
-          this.ngZone.run(() => {
-            this.router.navigate([`poke/detail/${selectedRows[0].name}`]);
-          });
-        }
+      // Navigate to detail page for clicked row
+      onRowClicked: (event) => {
+        this.ngZone.run(() => {
+          this.router.navigate([`poke/detail/${event.data.name}`]);
+        });
       },
       serverSideDatasource: {
         getRows: (params) => {
@@ -93,15 +89,12 @@ export class PokemonListComponent implements OnInit {
       onFirstDataRendered: (params) => {
         params.api.sizeColumnsToFit();
       },
-      // Navigate to detail page on row selection
-      onSelectionChanged: () => {
-        const selectedRows = this.personalGridOptions.api?.getSelectedRows() as BasicInfo[];
-        if (selectedRows.length) {
-          this.modalService.dismissAll();
-          this.ngZone.run(() => {
-            this.router.navigate([`poke/detail/${selectedRows[0].name}`]);
-          });
-        }
+      // Navigate to detail page for clicked row
+      onRowClicked: (event) => {
+        this.modalService.dismissAll();
+        this.ngZone.run(() => {
+          this.router.navigate([`poke/detail/${event.data.name}`]);
+        });
       }
     } as GridOptions;
 
