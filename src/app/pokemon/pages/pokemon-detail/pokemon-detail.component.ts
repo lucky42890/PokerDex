@@ -1,5 +1,5 @@
 import { GridOptions, AllCommunityModules } from '@ag-grid-community/all-modules';
-import { Component, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, HostListener, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pokemon } from 'src/app/core/interfaces/pokemon';
@@ -169,5 +169,11 @@ export class PokemonDetailComponent implements OnInit {
         }
       }
     );
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.statGridOptions.api?.sizeColumnsToFit();
+    this.moveGridOptions.api?.sizeColumnsToFit();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, HostListener } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridOptions, AllCommunityModules } from '@ag-grid-community/all-modules';
 import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
@@ -100,5 +100,10 @@ export class PokemonListComponent implements OnInit {
 
     this.personalModalTitle = type === 'caught' ? 'Pokemon list I\'ve caught' : 'Pokemon list I want to catch';
     this.modalService.open(content);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.gridOptions.api?.sizeColumnsToFit();
   }
 }
