@@ -1,0 +1,43 @@
+<div class="poke-list">
+  <div class="header">
+    <p class="title">Pokemon List</p>
+    <div ngbDropdown placement="bottom-right">
+      <button class="btn btn-outline-primary" id="dropdownActions" ngbDropdownToggle>Actions</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownActions">
+        <button ngbDropdownItem class="my-2" (click)="openModal(personalList, 'caught')">Caught List</button>
+        <button ngbDropdownItem class="my-2" (click)="openModal(personalList, 'wish')">Wishlist</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <ag-grid-angular
+      class="ag-theme-alpine list-table"
+      [gridOptions]="gridOptions"
+      [modules]="modules"
+    >
+    </ag-grid-angular>
+  </div>
+</div>
+
+<!-- Modal for personal list -->
+<ng-template #personalList let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ personalModalTitle }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ag-grid-angular
+      style="height: 300px"
+      class="ag-theme-alpine"
+      [gridOptions]="personalGridOptions"
+      [modules]="modules"
+    >
+    </ag-grid-angular>
+  </div>
+  <div class="modal-footer">
+    <button type="button" ngbAutofocus class="btn btn-success" (click)="c('Okay')">Okay</button>
+  </div>
+</ng-template>

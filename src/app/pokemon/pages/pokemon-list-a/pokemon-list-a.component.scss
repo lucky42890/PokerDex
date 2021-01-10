@@ -1,0 +1,41 @@
+$header_height: 50px;
+$page_padding_y: 40px;
+
+.poke-list {
+  width: 100%;
+  min-height: 100vh;
+  padding: $page_padding_y 30px;
+  box-sizing: border-box;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: $header_height;
+
+    .title {
+      font-size: 40px;
+      flex-grow: 1;
+    }
+  }
+
+  .content {
+    margin-top: 24px;
+    
+    .list-table {
+      width: 100%;
+      height: calc(95vh - #{$header_height} - #{2 * $page_padding_y});
+    }
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .poke-list {
+    padding: 30px 20px;
+    .header {
+      .title {
+        font-size: 26px;
+      }
+    }
+  }
+}

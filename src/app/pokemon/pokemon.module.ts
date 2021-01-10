@@ -6,11 +6,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PokemonRoutingModule } from './pokemon-routing.module';
 import { PokemonListComponent } from './pages/pokemon-list/pokemon-list.component';
 import { PokemonDetailComponent } from './pages/pokemon-detail/pokemon-detail.component';
+import { PokemonListAComponent } from './pages/pokemon-list-a/pokemon-list-a.component';
 
 @NgModule({
   declarations: [
     PokemonListComponent,
-    PokemonDetailComponent
+    PokemonDetailComponent,
+    PokemonListAComponent
   ],
   imports: [
     CommonModule,

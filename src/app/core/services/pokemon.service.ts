@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { PokemonDTO, Pokemon } from '../interfaces/pokemon';
 import { Move } from '../interfaces/move';
 import { Stat } from '../interfaces/stat';
@@ -18,6 +19,17 @@ export class PokemonService {
   getPokemonList(limit: number = 20, offset: number = 0): Observable<PokemonDTO> {
     const url = this.API_URL + `pokemon?limit=${limit}&offset=${offset}`;
     return this.http.get<PokemonDTO>(url);
+  }
+
+  getAllPokemonList(): Observable<PokemonDTO> {
+    const basicUrl = this.API_URL + 'pokemon';
+    return this.http.get<PokemonDTO>(basicUrl)
+      .pipe(
+        switchMap(result => {
+          const url = this.API_URL + `pokemon?limit=${result.count}&offset=0`;
+          return this.http.get<PokemonDTO>(url);
+        })
+      );
   }
 
   getPokemonInfoByName(name: string): Observable<Pokemon> {
