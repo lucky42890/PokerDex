@@ -50,18 +50,17 @@ export class PokemonListComponent implements OnInit {
       },
       serverSideDatasource: {
         getRows: (params) => {
-          try {
-            this.pokemonService
-              .getPokemonList(DEFAULT_ROW_NUM, params.request.startRow)
-              .subscribe(
-                result => {
-                  params.successCallback(result.results, result.count);
-                }
-              );
-          } catch (err) {
-            console.log(err);
-            params.failCallback();
-          }
+          this.pokemonService
+            .getPokemonList(DEFAULT_ROW_NUM, params.request.startRow)
+            .subscribe(
+              result => {
+                params.successCallback(result.results, result.count);
+              },
+              err => {
+                console.log(err);
+                params.failCallback();
+              }
+            );
         }
       }
     } as GridOptions;

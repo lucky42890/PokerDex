@@ -47,84 +47,88 @@ export class PokemonDetailComponent implements OnInit {
     this.pokemonName = this.route.snapshot.paramMap.get('name') || '';
 
     this.spinnerService.show();
-    try {
-      this.pokemonService
-        .getPokemonInfoByName(this.pokemonName)
-        .subscribe(
-          result => {
-            this.spinnerService.hide();
-            this.pokemonInfo = result;
+    this.pokemonService
+      .getPokemonInfoByName(this.pokemonName)
+      .subscribe(
+        result => {
+          this.spinnerService.hide();
+          this.pokemonInfo = result;
 
-            // Init ag-grid options
-            this.moveGridOptions = {
-              columnDefs: [
-                { field: 'name' },
-                { field: 'url' },
-              ],
-              rowSelection: 'single',
-              rowData: this.pokemonInfo.moves.map(move => move.move),
+          // Init ag-grid options
+          this.moveGridOptions = {
+            columnDefs: [
+              { field: 'name' },
+              { field: 'url' },
+            ],
+            rowSelection: 'single',
+            rowData: this.pokemonInfo.moves.map(move => move.move),
 
-              // Auto size of columns on first data render
-              onFirstDataRendered: (params) => {
-                params.api.sizeColumnsToFit();
-              },
-              // Show move details for clicked row
-              onRowClicked: (event) => {
-                this.ngZone.run(() => {
-                  this.spinnerService.show();
-                  this.pokemonService
-                  .getPokemonMove(event.data.url)
+            // Auto size of columns on first data render
+            onFirstDataRendered: (params) => {
+              params.api.sizeColumnsToFit();
+            },
+            // Show move details for clicked row
+            onRowClicked: (event) => {
+              this.ngZone.run(() => {
+                this.spinnerService.show();
+                this.pokemonService
+                .getPokemonMove(event.data.url)
+                .subscribe(
+                  move => {
+                    this.spinnerService.hide();
+                    this.moveDetail = move;
+                    this.modalService.open(this.moveModal);
+                  },
+                  err => {
+                    console.log(err);
+                  }
+                );
+              });
+            }
+          } as GridOptions;
+
+          this.statGridOptions = {
+            columnDefs: [
+              { field: 'base_stat' },
+              { field: 'effort' },
+              { field: 'name' },
+            ],
+            rowSelection: 'single',
+            rowData: this.pokemonInfo.stats.map(stat => ({
+              base_stat: stat.base_stat,
+              effort: stat.effort,
+              name: stat.stat.name
+            })),
+
+            // Auto size of columns on first data render
+            onFirstDataRendered: (params) => {
+              params.api.sizeColumnsToFit();
+            },
+            // Show stat details for clicked row
+            onRowClicked: (event) => {
+              this.ngZone.run(() => {
+                this.spinnerService.show();
+                this.pokemonService
+                  .getPokemonStat(event.data.name)
                   .subscribe(
-                    move => {
+                    stat => {
                       this.spinnerService.hide();
-                      this.moveDetail = move;
-                      this.modalService.open(this.moveModal);
+                      this.statDetail = stat;
+                      this.modalService.open(this.statModal);
+                    },
+                    err => {
+                      console.log(err);
                     }
                   );
-                });
-              }
-            } as GridOptions;
-
-            this.statGridOptions = {
-              columnDefs: [
-                { field: 'base_stat' },
-                { field: 'effort' },
-                { field: 'name' },
-              ],
-              rowSelection: 'single',
-              rowData: this.pokemonInfo.stats.map(stat => ({
-                base_stat: stat.base_stat,
-                effort: stat.effort,
-                name: stat.stat.name
-              })),
-
-              // Auto size of columns on first data render
-              onFirstDataRendered: (params) => {
-                params.api.sizeColumnsToFit();
-              },
-              // Show stat details for clicked row
-              onRowClicked: (event) => {
-                this.ngZone.run(() => {
-                  this.spinnerService.show();
-                  this.pokemonService
-                    .getPokemonStat(event.data.name)
-                    .subscribe(
-                      stat => {
-                        this.spinnerService.hide();
-                        this.statDetail = stat;
-                        this.modalService.open(this.statModal);
-                      }
-                    );
-                });
-              }
-            } as GridOptions;
-          }
-        );
-
-    } catch (err) {
-      this.spinnerService.hide();
-      console.log('API get error of pokemon detail information', err);
-    }
+              });
+            }
+          } as GridOptions;
+        },
+        err => {
+          this.spinnerService.hide();
+          console.log('API get error of pokemon detail information', err);      
+        }
+      );
   }
 
   backToList(): void {

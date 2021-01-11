@@ -53,20 +53,18 @@ export class PokemonListAComponent implements OnInit {
     } as GridOptions;
 
     this.spinnerService.show();
-    try {
-      this.pokemonService
-        .getAllPokemonList()
-        .subscribe(
-          result => {
-            this.spinnerService.hide();
-            this.gridOptions.api?.setRowData(result.results);
-          }
-        );
-
-    } catch (err) {
-      this.spinnerService.hide();
-      console.log('API get error of pokemon list', err);
-    }
+    this.pokemonService
+      .getAllPokemonList()
+      .subscribe(
+        result => {
+          this.spinnerService.hide();
+          this.gridOptions.api?.setRowData(result.results);
+        },
+        err => {
+          this.spinnerService.hide();
+          console.log('API get error of pokemon list', err);
+        }
+      );
   }
 
   private createColumnDefs(): object[] {
